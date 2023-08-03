@@ -1,15 +1,9 @@
 # eclisp
 
-To install dependencies:
+A simple little lisp built with TypeScript.
 
-```bash
-bun install
-```
+## Todo:
 
-To run:
-
-```bash
-bun run index.ts
-```
-
-This project was created using `bun init` in bun v0.6.1. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
+-   [x] Tokenizer
+-   [x] Parser
+-   [ ] Eval

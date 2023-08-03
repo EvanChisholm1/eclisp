@@ -1,4 +1,4 @@
-enum Token {
+export enum Token {
     Number = "number",
     String = "string",
     OpenParen = "openParen",
@@ -7,14 +7,16 @@ enum Token {
     WhiteSpace = "whitespace",
 }
 
+export type TokenList = {
+    type: Token;
+    value: string;
+}[];
+
 const numbers = new Array(10).fill(0).map((_, i) => i.toString());
 
-export function tokenize(input: string) {
+export function tokenize(input: string): TokenList {
     const inputStream = input.trim().split("");
-    const tokens: {
-        type: Token;
-        value: string;
-    }[] = [{ type: Token.WhiteSpace, value: " " }];
+    const tokens: TokenList = [{ type: Token.WhiteSpace, value: " " }];
 
     while (inputStream.length > 0) {
         const currentChar = inputStream.splice(0, 1)[0];
