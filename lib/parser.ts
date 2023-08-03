@@ -15,7 +15,7 @@ export function parse(toks: TokenList): AST {
         } else if (currentTok.type === Token.Number) {
             items.push({
                 type: currentTok.type,
-                value: parseInt(currentTok.value),
+                value: parseFloat(currentTok.value),
             });
         } else if (currentTok.type !== Token.WhiteSpace) {
             items.push(currentTok);

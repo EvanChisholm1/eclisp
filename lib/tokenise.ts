@@ -29,9 +29,10 @@ export function tokenize(input: string): TokenList {
             tokens.push({ type: Token.CloseParen, value: currentChar });
         } else if (numbers.includes(currentChar)) {
             if (prevTok.type === "number") {
-                console.log("previous token is also number");
                 prevTok.value = prevTok.value.concat(currentChar);
             } else tokens.push({ type: Token.Number, value: currentChar });
+        } else if (currentChar === "." && prevTok.type === Token.Number) {
+            prevTok.value = prevTok.value.concat(currentChar);
         } else if (currentChar === " " || currentChar === "\n") {
             if (prevTok.type === Token.WhiteSpace) continue;
             tokens.push({ type: Token.WhiteSpace, value: " " });
@@ -43,9 +44,6 @@ export function tokenize(input: string): TokenList {
                 string.push(strC);
             } while (strC !== '"');
             tokens.push({ type: Token.String, value: string.join("") });
-            // if(prevTok.type === Token.String && prevTok.value[0] ==='"') {
-            //     prevTok.value = prevTok.value.concat('"')
-            // }
         } else {
             const id: string[] = [currentChar];
             while (inputStream[0] !== " " && inputStream[0] !== "\n") {
@@ -53,7 +51,6 @@ export function tokenize(input: string): TokenList {
                 id.push(cur);
             }
             tokens.push({ type: Token.Id, value: id.join("") });
-            // tokens.push({ type: Token.Id, value: currentChar });
         }
     }
 
