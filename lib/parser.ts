@@ -1,6 +1,6 @@
 import { Token, TokenList } from "./tokenise";
 
-type AST = Array<AST | { value: string | number; type: Token }>;
+export type AST = Array<AST | { value: string | number; type: Token }>;
 
 export function parse(toks: TokenList): AST {
     const items: AST = [];
