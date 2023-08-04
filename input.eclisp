@@ -2,3 +2,4 @@
 (print (/ 2 (* 4 (+ 30 (- 2 8)))))
 (print "I am" (- (/ (+ 444 2) 2) 33) "years old")
 (print (* 10 0.5))
+(print true false)

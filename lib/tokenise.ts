@@ -5,6 +5,7 @@ export enum Token {
     CloseParen = "closeParen",
     Id = "id",
     WhiteSpace = "whitespace",
+    Bool = "bool",
 }
 
 export type TokenList = {
@@ -46,11 +47,25 @@ export function tokenize(input: string): TokenList {
             tokens.push({ type: Token.String, value: string.join("") });
         } else {
             const id: string[] = [currentChar];
-            while (inputStream[0] !== " " && inputStream[0] !== "\n") {
+            while (
+                inputStream[0] !== " " &&
+                inputStream[0] !== "\n" &&
+                inputStream[0] !== ")"
+            ) {
                 const cur = inputStream.splice(0, 1)[0];
                 id.push(cur);
             }
             tokens.push({ type: Token.Id, value: id.join("") });
+        }
+    }
+
+    for (const tok of tokens) {
+        console.log(tok);
+        if (
+            tok.type === Token.Id &&
+            (tok.value === "true" || tok.value === "false")
+        ) {
+            tok.type = Token.Bool;
         }
     }
 

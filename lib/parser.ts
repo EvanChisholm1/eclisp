@@ -1,6 +1,8 @@
 import { Token, TokenList } from "./tokenise";
 
-export type AST = Array<AST | { value: string | number; type: Token }>;
+export type AST = Array<
+    AST | { value: string | number | boolean; type: Token }
+>;
 
 export function parse(toks: TokenList): AST {
     const items: AST = [];
@@ -16,6 +18,11 @@ export function parse(toks: TokenList): AST {
             items.push({
                 type: currentTok.type,
                 value: parseFloat(currentTok.value),
+            });
+        } else if (currentTok.type === Token.Bool) {
+            items.push({
+                type: currentTok.type,
+                value: currentTok.value === "true" ? true : false,
             });
         } else if (currentTok.type !== Token.WhiteSpace) {
             items.push(currentTok);

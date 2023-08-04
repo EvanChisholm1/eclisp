@@ -14,3 +14,4 @@ const ast = parse(tokens);
 console.log(ast);
 
 evaluate(ast);
+console.log(1.0);

@@ -17,7 +17,7 @@ export function evaluate(ast: AST): {
             console.log(str);
             return {
                 type: Token.String,
-                value: str,
+                value: "",
             };
         }
 
