@@ -9,7 +9,7 @@ A simple little lisp built with TypeScript.
 -   [ ] Eval
 -   [ ] Variables
 -   [x] Floating Point Literals
--   [ ] Booleans
+-   [x] Booleans
 -   [ ] Functions
 -   [ ] Loops
 -   [ ] Control Flow

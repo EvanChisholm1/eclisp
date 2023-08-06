@@ -9,20 +9,33 @@
 (print)
 (print (+ 99 (+ 73 33)))
 
+(print)
 (print "> tests")
 (print (> 100 2))
 (print (> 2 200))
 
+(print)
 (print "< tests")
 (print (< 100 2))
 (print (< 2 200))
 
+(print)
 (print "<= tests")
 (print (<= 2 2))
 (print (<= 1 2))
 (print (<= 2 1))
 
+(print)
 (print ">= tests")
 (print (>= 2 2))
 (print (>= 1 2))
 (print (>= 2 1))
+
+
+(print)
+(print "= tests")
+(print (= i 4))
+(print (= i 3))
+(print (= i "hello world"))
+(let h "hello world")
+(print (= "hello world" h))
