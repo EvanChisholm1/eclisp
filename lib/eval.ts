@@ -92,6 +92,20 @@ export function evaluate(
                 value: (res[1].value as number) - (res[2].value as number),
             };
         }
+
+        if (first.value === ">") {
+            returnVal = {
+                type: Token.Bool,
+                value: (res[1].value as number) > (res[2].value as number),
+            };
+        }
+
+        if (first.value === "<") {
+            returnVal = {
+                type: Token.Bool,
+                value: (res[1].value as number) < (res[2].value as number),
+            };
+        }
     }
 
     state.pop();

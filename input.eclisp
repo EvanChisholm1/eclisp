@@ -1,8 +1,16 @@
 (let i 4)
 (print i)
-(print (+ i 3))
+(print (/ (+ i 3) 2))
 (print "Hello world")
 (print (/ 2 (* 4 (+ 30 (- 2 8)))))
 (print "I am" (- (/ (+ 444 2) 2) 33) "years old")
 (print (* 10 0.5))
 (print true false)
+(print)
+(print (+ 99 (+ 73 33)))
+
+(print (> 100 2))
+(print (> 2 200))
+
+(print (< 100 2))
+(print (< 2 200))
