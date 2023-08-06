@@ -9,8 +9,20 @@
 (print)
 (print (+ 99 (+ 73 33)))
 
+(print "> tests")
 (print (> 100 2))
 (print (> 2 200))
 
+(print "< tests")
 (print (< 100 2))
 (print (< 2 200))
+
+(print "<= tests")
+(print (<= 2 2))
+(print (<= 1 2))
+(print (<= 2 1))
+
+(print ">= tests")
+(print (>= 2 2))
+(print (>= 1 2))
+(print (>= 2 1))
