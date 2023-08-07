@@ -50,7 +50,8 @@ export function tokenize(input: string): TokenList {
             while (
                 inputStream[0] !== " " &&
                 inputStream[0] !== "\n" &&
-                inputStream[0] !== ")"
+                inputStream[0] !== ")" &&
+                inputStream[0] !== "("
             ) {
                 const cur = inputStream.splice(0, 1)[0];
                 id.push(cur);

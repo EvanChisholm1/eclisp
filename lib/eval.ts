@@ -13,6 +13,8 @@ function evalIf(ast: AST, state: Array<StackFrame>) {
 
     if (condition.value) {
         return Array.isArray(ast[2]) ? evaluate(ast[2], state) : ast[2];
+    } else if (ast[3]) {
+        return Array.isArray(ast[3]) ? evaluate(ast[3], state) : ast[3];
     } else {
         return { value: false, type: Token.Bool };
     }
