@@ -1,11 +1,21 @@
 import { stat } from "fs";
 import { AST } from "./parser";
-import { Token } from "./tokenise";
+import { Token, tokenize } from "./tokenise";
 
 interface StackFrame {
     vars: {
         [key: string]: { value: string | boolean | number; type: Token };
     };
+}
+
+function evalIf(ast: AST, state: Array<StackFrame>) {
+    const condition = Array.isArray(ast[1]) ? evaluate(ast[1], state) : ast[1];
+
+    if (condition.value) {
+        return Array.isArray(ast[2]) ? evaluate(ast[2], state) : ast[2];
+    } else {
+        return { value: false, type: Token.Bool };
+    }
 }
 
 export function evaluate(
@@ -19,6 +29,14 @@ export function evaluate(
     const vars: {
         [key: string]: { value: string | boolean | number; type: Token };
     } = {};
+
+    if (
+        !Array.isArray(ast[0]) &&
+        ast[0].type === Token.Id &&
+        ast[0].value === "if"
+    ) {
+        return evalIf(ast, state);
+    }
 
     for (const frame of state) {
         for (const [key, value] of Object.entries(frame.vars)) {
