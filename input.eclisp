@@ -65,7 +65,12 @@
 
 (let a 3)
 (let b 5)
-(if (> a b)
+(let c (if (> a b)
     (print "a is greater than b") 
-    (print "b is greater than a")
-)
+    (
+        (print "b is greater than a")
+        (+ 4 9)
+    )
+))
+
+(print c)

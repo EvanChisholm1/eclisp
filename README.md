@@ -7,10 +7,11 @@ A simple little lisp built with TypeScript.
 -   [x] Tokenizer
 -   [x] Parser
 -   [ ] Eval
--   [ ] Variables
+-   [x] Variables
+-   [ ] Edit Variables
 -   [x] Floating Point Literals
 -   [x] Booleans
 -   [ ] Functions
 -   [ ] Loops
--   [ ] Control Flow
+-   [x] Control Flow
 -   [ ] Better command line experience
