@@ -39,3 +39,8 @@
 (print (= i "hello world"))
 (let h "hello world")
 (print (= "hello world" h))
+
+(print)
+(print "not tests")
+(print (not true))
+(print (not false))
