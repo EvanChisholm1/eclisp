@@ -74,3 +74,10 @@
 ))
 
 (print c)
+
+(print)
+(print "updating variables")
+(let updating 100)
+(print updating)
+(set updating 200)
+(print updating)

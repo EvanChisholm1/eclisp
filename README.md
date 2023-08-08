@@ -8,7 +8,7 @@ A simple little lisp built with TypeScript.
 -   [x] Parser
 -   [ ] Eval
 -   [x] Variables
--   [ ] Edit Variables
+-   [x] Edit Variables
 -   [x] Floating Point Literals
 -   [x] Booleans
 -   [ ] Functions

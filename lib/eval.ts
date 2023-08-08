@@ -20,6 +20,24 @@ function evalIf(ast: AST, state: Array<StackFrame>) {
     }
 }
 
+function evalSet(
+    id: string,
+    newValue: {
+        value: string | number | boolean;
+        type: Token;
+    },
+    state: Array<StackFrame>
+) {
+    for (let i = state.length - 1; i >= 0; i--) {
+        if (state[i].vars[id]) {
+            state[i].vars[id] = newValue;
+            return newValue;
+        }
+    }
+
+    return { type: Token.Bool, value: false };
+}
+
 export function evaluate(
     ast: AST,
     state: Array<StackFrame> = []
@@ -38,6 +56,16 @@ export function evaluate(
         ast[0].value === "if"
     ) {
         return evalIf(ast, state);
+    }
+
+    if (
+        !Array.isArray(ast[0]) &&
+        ast[0].type === Token.Id &&
+        !Array.isArray(ast[1]) &&
+        !Array.isArray(ast[2]) &&
+        ast[0].value === "set"
+    ) {
+        return evalSet(ast[1].value as string, ast[2], state);
     }
 
     for (const frame of state) {
