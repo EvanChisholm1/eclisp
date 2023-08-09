@@ -61,7 +61,7 @@ export function tokenize(input: string): TokenList {
     }
 
     for (const tok of tokens) {
-        console.log(tok);
+        // console.log(tok);
         if (
             tok.type === Token.Id &&
             (tok.value === "true" || tok.value === "false")

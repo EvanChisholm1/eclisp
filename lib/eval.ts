@@ -1,4 +1,3 @@
-import { stat } from "fs";
 import { AST } from "./parser";
 import { Token } from "./tokenise";
 
@@ -6,18 +5,86 @@ interface StackFrame {
     vars: {
         [key: string]: { value: string | boolean | number; type: Token };
     };
+    funcs: {
+        [key: string]: {
+            ast: AST;
+            paramIds: Array<string>;
+        };
+    };
+}
+
+function funcDef(ast: AST, state: Array<StackFrame>) {
+    // ast value 0: defn
+    // ast value 1: id
+    // ast value 2: params list (a b c)
+    // ast value 3: ast
+    if (!Array.isArray(ast)) return { value: false, type: Token.Bool };
+    if (Array.isArray(ast[1])) return { value: false, type: Token.Bool };
+    if (!Array.isArray(ast[2])) return { value: false, type: Token.Bool };
+    if (!Array.isArray(ast[3])) return { value: false, type: Token.Bool };
+
+    const funcName = ast[1]!.value as string;
+    const func: {
+        ast: AST;
+        paramIds: Array<string>;
+    } = {
+        paramIds: ast[2].map(x => (x as any).value as string),
+        ast: ast[3],
+    };
+
+    state.at(-1)!.funcs[funcName] = func;
+
+    return { value: true, type: Token.Bool };
+}
+
+function runFunc(
+    id: string,
+    params: Array<{ value: string | boolean | number; type: Token }>,
+    state: Array<StackFrame>
+) {
+    const vars: {
+        [key: string]: { value: string | boolean | number; type: Token };
+    } = {};
+    const funcs: {
+        [key: string]: {
+            ast: AST;
+            paramIds: Array<string>;
+        };
+    } = {};
+
+    for (const frame of state) {
+        for (const [key, value] of Object.entries(frame.vars)) {
+            vars[key] = value;
+        }
+
+        for (const [key, value] of Object.entries(frame.funcs)) {
+            funcs[key] = value;
+        }
+    }
+
+    const defintion = funcs[id]!;
+    defintion.paramIds.forEach((x, i) => {
+        state[state.length - 1].vars[x] = params[i];
+    });
+
+    return evaluate(defintion.ast, state);
 }
 
 function evalIf(ast: AST, state: Array<StackFrame>) {
     const condition = Array.isArray(ast[1]) ? evaluate(ast[1], state) : ast[1];
+    let returnVal;
 
     if (condition.value) {
-        return Array.isArray(ast[2]) ? evaluate(ast[2], state) : ast[2];
+        returnVal = Array.isArray(ast[2]) ? evaluate(ast[2], state) : ast[2];
     } else if (ast[3]) {
-        return Array.isArray(ast[3]) ? evaluate(ast[3], state) : ast[3];
+        returnVal = Array.isArray(ast[3]) ? evaluate(ast[3], state) : ast[3];
     } else {
-        return { value: false, type: Token.Bool };
+        returnVal = { value: false, type: Token.Bool };
     }
+
+    state.pop();
+
+    return returnVal;
 }
 
 function evalSet(
@@ -35,6 +102,7 @@ function evalSet(
         }
     }
 
+    state.pop();
     return { type: Token.Bool, value: false };
 }
 
@@ -45,9 +113,15 @@ export function evaluate(
     value: string | number | boolean;
     type: Token;
 } {
-    state.push({ vars: {} });
+    state.push({ vars: {}, funcs: {} });
     const vars: {
         [key: string]: { value: string | boolean | number; type: Token };
+    } = {};
+    const funcs: {
+        [key: string]: {
+            ast: AST;
+            paramIds: Array<string>;
+        };
     } = {};
 
     if (
@@ -56,6 +130,14 @@ export function evaluate(
         ast[0].value === "if"
     ) {
         return evalIf(ast, state);
+    }
+
+    if (
+        !Array.isArray(ast[0]) &&
+        ast[0].type === Token.Id &&
+        ast[0].value === "defn"
+    ) {
+        return funcDef(ast, state);
     }
 
     if (
@@ -72,6 +154,10 @@ export function evaluate(
         for (const [key, value] of Object.entries(frame.vars)) {
             vars[key] = value;
         }
+
+        for (const [key, value] of Object.entries(frame.funcs)) {
+            funcs[key] = value;
+        }
     }
 
     const res = ast
@@ -85,7 +171,6 @@ export function evaluate(
         res.at(-1)!;
 
     if (first.type === Token.Id) {
-        // console.log(state);
         if (first.value === "print") {
             const str = res
                 .slice(1)
@@ -174,6 +259,14 @@ export function evaluate(
                 type: Token.Bool,
                 value: !(res[1].value as any),
             };
+        }
+
+        if (
+            Object.entries(funcs)
+                .map(([key]) => key)
+                .includes(first.value as string)
+        ) {
+            returnVal = runFunc(first.value as string, res.slice(1), state);
         }
     }
 

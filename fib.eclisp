@@ -1,0 +1,27 @@
+
+(print "fibonnaci sequence")
+(defn fib (i) (
+    (if (= i 0) (
+        0
+    ) (
+        (if (= i 1) (
+            1
+        ) (
+            (+ (fib (- i 1)) (fib (- i 2)))
+        ))
+    ))
+))
+
+(print (fib 0))
+(print (fib 1))
+(print (fib 2))
+(print (fib 3))
+(print (fib 4))
+(print (fib 5))
+(print (fib 6))
+(print (fib 7))
+(print (fib 8))
+(print (fib 9))
+(print (fib 10))
+(print (fib 11))
+(print (fib 12))
