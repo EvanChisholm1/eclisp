@@ -11,7 +11,11 @@ A simple little lisp built with TypeScript.
 -   [x] Edit Variables
 -   [x] Floating Point Literals
 -   [x] Booleans
--   [ ] Functions
+-   [x] Functions
 -   [ ] Loops
 -   [x] Control Flow
 -   [ ] Better command line experience
+-   [x] Fibonacci Sequence From Scratch
+-   [ ] Quote
+-   [ ] Array
+-   [ ] Hashmap

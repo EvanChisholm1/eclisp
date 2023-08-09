@@ -1,4 +1,4 @@
-(print "fibonnaci sequence")
+(print "fibonacci sequence")
 (defn fib (i) (
     (if (= i 0) (
         0

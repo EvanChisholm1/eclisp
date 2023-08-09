@@ -81,3 +81,15 @@
 (print updating)
 (set updating 200)
 (print updating)
+
+(print)
+(print "And")
+(print (and true true))
+(print (and false true))
+(print (and false false))
+
+(print)
+(print "Or")
+(print (or true true))
+(print (or false true))
+(print (or false false))

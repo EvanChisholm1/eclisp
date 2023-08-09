@@ -254,6 +254,20 @@ export function evaluate(
             };
         }
 
+        if (first.value === "or") {
+            returnVal = {
+                type: Token.Bool,
+                value: (res[1].value as any) || (res[2].value as any),
+            };
+        }
+
+        if (first.value === "and") {
+            returnVal = {
+                type: Token.Bool,
+                value: (res[1].value as any) && (res[2].value as any),
+            };
+        }
+
         if (first.value === "not") {
             returnVal = {
                 type: Token.Bool,
