@@ -47,4 +47,6 @@ Fibonnaci sequence O(N) time complexity:
 -   [ ] Quote
 -   [ ] Array
 -   [ ] Hashmap
+-   [ ] Web Playground
+-   [ ] More Builtin Operators/Functions; ^, sqrt, floor, ceil, round, input, etc.
 -   [ ] Gigantic Refactor because the code is terrible
