@@ -11,16 +11,29 @@
     ))
 ))
 
-(print (fib 0))
-(print (fib 1))
-(print (fib 2))
-(print (fib 3))
-(print (fib 4))
-(print (fib 5))
-(print (fib 6))
-(print (fib 7))
-(print (fib 8))
-(print (fib 9))
-(print (fib 10))
-(print (fib 11))
-(print (fib 12))
+(defn fibDp (n) (
+    (if (= n 0) (
+        0
+    ) (if (= n 1) (
+        1
+    ) (
+        (let a 0)
+        (let b 1)
+        (let i 2)
+        (while (<= i n) (
+            (let temp b)
+            (set b (+ a b))
+            (set a temp)
+            (set i (+ i 1))
+        ))
+        (b)
+    )))
+))
+
+
+
+(let n 0)
+(while (<= n 50) (
+    (print (fibDp n))
+    (set n (+ n 1))
+))

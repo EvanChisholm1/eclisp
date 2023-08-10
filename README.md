@@ -12,7 +12,8 @@ A simple little lisp built with TypeScript.
 -   [x] Floating Point Literals
 -   [x] Booleans
 -   [x] Functions
--   [ ] Loops
+-   [x] While Loops
+-   [ ] For Loops
 -   [x] Control Flow
 -   [ ] Better command line experience
 -   [x] Fibonacci Sequence From Scratch

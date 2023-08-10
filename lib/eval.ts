@@ -113,14 +113,30 @@ function evalSet(
     newValue: AST | { type: Token; value: string | boolean | number },
     state: Array<StackFrame>
 ): { type: Token; value: string | boolean | number } {
-    const setValue = Array.isArray(newValue)
+    const vars: {
+        [key: string]: { value: string | boolean | number; type: Token };
+    } = {};
+
+    for (const frame of state) {
+        for (const [key, value] of Object.entries(frame.vars)) {
+            vars[key] = value;
+        }
+    }
+
+    let setValue = Array.isArray(newValue)
         ? evaluate(newValue, state)
         : newValue;
+
+    if (
+        setValue.type === Token.Id &&
+        vars[setValue.value as string] !== undefined
+    ) {
+        setValue = vars[setValue.value as string];
+    }
 
     for (let i = state.length - 1; i >= 0; i--) {
         if (state[i].vars[id] !== undefined && state[i].vars[id] !== null) {
             state[i].vars[id] = setValue;
-            return setValue;
         }
     }
 
