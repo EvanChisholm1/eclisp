@@ -110,6 +110,29 @@ function evalWhile(ast: AST, state: Array<StackFrame>) {
     return returnVal;
 }
 
+function evalFor(ast: AST, state: Array<StackFrame>) {
+    evaluate(ast[1] as any, state);
+    let condition;
+    condition = Array.isArray(ast[2]) ? evaluate(ast[2], state) : ast[2];
+
+    let returnVal: {
+        type: Token;
+        value: string | number | boolean;
+    } = { type: Token.Bool, value: false };
+    while (condition.value) {
+        if (condition.value) {
+            returnVal = Array.isArray(ast[4])
+                ? evaluate(ast[4], state)
+                : ast[4];
+        }
+        evaluate(ast[3] as any, state);
+        condition = Array.isArray(ast[2]) ? evaluate(ast[2], state) : ast[2];
+    }
+    state.pop();
+
+    return returnVal;
+}
+
 function evalSet(
     id: string,
     newValue: AST | { type: Token; value: string | boolean | number },
@@ -210,6 +233,14 @@ export function evaluate(
         ast[0].value === "while"
     ) {
         return evalWhile(ast, state);
+    }
+
+    if (
+        !Array.isArray(ast[0]) &&
+        ast[0].type === Token.Id &&
+        ast[0].value === "for"
+    ) {
+        return evalFor(ast, state);
     }
 
     if (

@@ -1,0 +1,4 @@
+(print "also count to ten")
+(for (let x 0) (< x 10) (set x (+ x 2)) (
+    (print x)
+))
