@@ -44,3 +44,7 @@
     (print i)
     (set i (+ i 1))
 ))
+
+(for (let x 0) (<= x 50) (set x (+ x 1)) (
+    (print (fibDp x))
+))

@@ -23,23 +23,28 @@ Fibonnaci sequence O(N) time complexity:
         (b)
     )))
 ))
+
+(for (let x 0) (<= x 50) (set x (+ x 1)) (
+    (print (fibDp x))
+))
 ```
 
 ## Todo:
 
 -   [x] Tokenizer
 -   [x] Parser
--   [ ] Eval
+-   [x] Eval
 -   [x] Variables
 -   [x] Edit Variables
 -   [x] Floating Point Literals
 -   [x] Booleans
 -   [x] Functions
 -   [x] While Loops
--   [ ] For Loops
+-   [x] For Loops
 -   [x] Control Flow
--   [ ] Better command line experience
+-   [x] Better command line experience
 -   [x] Fibonacci Sequence From Scratch
 -   [ ] Quote
 -   [ ] Array
 -   [ ] Hashmap
+-   [ ] Gigantic Refactor because the code is terrible
