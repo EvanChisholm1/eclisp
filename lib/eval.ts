@@ -32,7 +32,8 @@ function funcDef(ast: AST, state: Array<StackFrame>) {
         ast: ast[3],
     };
 
-    state.at(-1)!.funcs[funcName] = func;
+    state.at(-2)!.funcs[funcName] = func;
+    state.pop();
 
     return { value: true, type: Token.Bool };
 }
@@ -67,7 +68,8 @@ function runFunc(
         state[state.length - 1].vars[x] = params[i];
     });
 
-    return evaluate(defintion.ast, state);
+    const returnVal = evaluate(defintion.ast, state);
+    return returnVal;
 }
 
 function evalIf(ast: AST, state: Array<StackFrame>) {
@@ -144,6 +146,38 @@ function evalSet(
     return { type: Token.Bool, value: false };
 }
 
+function evalLet(
+    id: string,
+    newValue: AST | { type: Token; value: string | boolean | number },
+    state: Array<StackFrame>
+): { type: Token; value: string | boolean | number } {
+    const vars: {
+        [key: string]: { value: string | boolean | number; type: Token };
+    } = {};
+
+    for (const frame of state) {
+        for (const [key, value] of Object.entries(frame.vars)) {
+            vars[key] = value;
+        }
+    }
+
+    let setValue = Array.isArray(newValue)
+        ? evaluate(newValue, state)
+        : newValue;
+
+    if (
+        setValue.type === Token.Id &&
+        vars[setValue.value as string] !== undefined
+    ) {
+        setValue = vars[setValue.value as string];
+    }
+
+    state.at(-2)!.vars[id] = setValue;
+
+    state.pop();
+    return { type: Token.Bool, value: false };
+}
+
 export function evaluate(
     ast: AST,
     state: Array<StackFrame> = []
@@ -190,10 +224,18 @@ export function evaluate(
         !Array.isArray(ast[0]) &&
         ast[0].type === Token.Id &&
         !Array.isArray(ast[1]) &&
-        // !Array.isArray(ast[2]) &&
         ast[0].value === "set"
     ) {
         return evalSet(ast[1].value as string, ast[2], state);
+    }
+
+    if (
+        !Array.isArray(ast[0]) &&
+        ast[0].type === Token.Id &&
+        !Array.isArray(ast[1]) &&
+        ast[0].value === "let"
+    ) {
+        return evalLet(ast[1].value as string, ast[2], state);
     }
 
     for (const frame of state) {
@@ -226,14 +268,6 @@ export function evaluate(
             returnVal = {
                 type: Token.String,
                 value: str,
-            };
-        }
-
-        if (first.value === "let") {
-            state.at(-2)!.vars[res[1].value as string] = res[2];
-            returnVal = {
-                type: res[2].type,
-                value: res[2].value,
             };
         }
 
