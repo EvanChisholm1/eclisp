@@ -87,18 +87,40 @@ function evalIf(ast: AST, state: Array<StackFrame>) {
     return returnVal;
 }
 
+function evalWhile(ast: AST, state: Array<StackFrame>) {
+    let condition;
+    condition = Array.isArray(ast[1]) ? evaluate(ast[1], state) : ast[1];
+
+    let returnVal: {
+        type: Token;
+        value: string | number | boolean;
+    } = { type: Token.Bool, value: false };
+    while (condition.value) {
+        if (condition.value) {
+            returnVal = Array.isArray(ast[2])
+                ? evaluate(ast[2], state)
+                : ast[2];
+        }
+        condition = Array.isArray(ast[1]) ? evaluate(ast[1], state) : ast[1];
+    }
+    state.pop();
+
+    return returnVal;
+}
+
 function evalSet(
     id: string,
-    newValue: {
-        value: string | number | boolean;
-        type: Token;
-    },
+    newValue: AST | { type: Token; value: string | boolean | number },
     state: Array<StackFrame>
-) {
+): { type: Token; value: string | boolean | number } {
+    const setValue = Array.isArray(newValue)
+        ? evaluate(newValue, state)
+        : newValue;
+
     for (let i = state.length - 1; i >= 0; i--) {
-        if (state[i].vars[id]) {
-            state[i].vars[id] = newValue;
-            return newValue;
+        if (state[i].vars[id] !== undefined && state[i].vars[id] !== null) {
+            state[i].vars[id] = setValue;
+            return setValue;
         }
     }
 
@@ -135,6 +157,14 @@ export function evaluate(
     if (
         !Array.isArray(ast[0]) &&
         ast[0].type === Token.Id &&
+        ast[0].value === "while"
+    ) {
+        return evalWhile(ast, state);
+    }
+
+    if (
+        !Array.isArray(ast[0]) &&
+        ast[0].type === Token.Id &&
         ast[0].value === "defn"
     ) {
         return funcDef(ast, state);
@@ -144,7 +174,7 @@ export function evaluate(
         !Array.isArray(ast[0]) &&
         ast[0].type === Token.Id &&
         !Array.isArray(ast[1]) &&
-        !Array.isArray(ast[2]) &&
+        // !Array.isArray(ast[2]) &&
         ast[0].value === "set"
     ) {
         return evalSet(ast[1].value as string, ast[2], state);

@@ -1,0 +1,7 @@
+(print "count to ten")
+
+(let i 0)
+(while (< i 10) (
+    (set i (+ i 1))
+    (print i)
+)) 
