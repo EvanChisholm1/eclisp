@@ -2,6 +2,8 @@
 
 A simple little lisp built with TypeScript.
 
+[Web Playground](https://eclisp.vercel.app), Very Ugly but super simple to use.
+
 Fibonnaci sequence O(N) time complexity:
 
 ```
@@ -50,3 +52,6 @@ Fibonnaci sequence O(N) time complexity:
 -   [ ] Web Playground
 -   [ ] More Builtin Operators/Functions; ^, sqrt, floor, ceil, round, input, etc.
 -   [ ] Gigantic Refactor because the code is terrible
+-   [ ] Better Type Safety/TypeScript Typings, kinda part of refactor
+-   [ ] Error Handling, Currently errors just silently happen
+-   [ ] Proper Value Type so every time I make a change I don't have to update it throughout my code base
