@@ -1,0 +1,16 @@
+(print (list 1 2 3))
+(let x (list "a" "b" "c"))
+(print x)
+(print (nth 2 x))
+(print (nth 1 x))
+(print (nth 0 x))
+(print (nth -1 x))
+
+(let myNums (list 1 2 3))
+
+(let sum 0);
+(for (let i 0) (< i 3) (set i (+ i 1)) (
+    (set sum (+ sum (nth i myNums)))
+))
+
+(print sum)

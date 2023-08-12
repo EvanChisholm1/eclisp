@@ -3,7 +3,10 @@ import { Token } from "./tokenise";
 
 interface StackFrame {
     vars: {
-        [key: string]: { value: string | boolean | number; type: Token };
+        [key: string]: {
+            value: string | boolean | number | Array<any>;
+            type: Token;
+        };
     };
     funcs: {
         [key: string]: {
@@ -40,11 +43,17 @@ function funcDef(ast: AST, state: Array<StackFrame>) {
 
 function runFunc(
     id: string,
-    params: Array<{ value: string | boolean | number; type: Token }>,
+    params: Array<{
+        value: string | boolean | number | Array<any>;
+        type: Token;
+    }>,
     state: Array<StackFrame>
 ) {
     const vars: {
-        [key: string]: { value: string | boolean | number; type: Token };
+        [key: string]: {
+            value: string | boolean | number | Array<any>;
+            type: Token;
+        };
     } = {};
     const funcs: {
         [key: string]: {
@@ -95,7 +104,7 @@ function evalWhile(ast: AST, state: Array<StackFrame>) {
 
     let returnVal: {
         type: Token;
-        value: string | number | boolean;
+        value: string | number | boolean | Array<any>;
     } = { type: Token.Bool, value: false };
     while (condition.value) {
         if (condition.value) {
@@ -117,7 +126,7 @@ function evalFor(ast: AST, state: Array<StackFrame>) {
 
     let returnVal: {
         type: Token;
-        value: string | number | boolean;
+        value: string | number | boolean | Array<any>;
     } = { type: Token.Bool, value: false };
     while (condition.value) {
         if (condition.value) {
@@ -139,7 +148,10 @@ function evalSet(
     state: Array<StackFrame>
 ): { type: Token; value: string | boolean | number } {
     const vars: {
-        [key: string]: { value: string | boolean | number; type: Token };
+        [key: string]: {
+            value: string | boolean | number | Array<any>;
+            type: Token;
+        };
     } = {};
 
     for (const frame of state) {
@@ -175,7 +187,10 @@ function evalLet(
     state: Array<StackFrame>
 ): { type: Token; value: string | boolean | number } {
     const vars: {
-        [key: string]: { value: string | boolean | number; type: Token };
+        [key: string]: {
+            value: string | boolean | number | Array<any>;
+            type: Token;
+        };
     } = {};
 
     for (const frame of state) {
@@ -205,12 +220,15 @@ export function evaluate(
     ast: AST,
     state: Array<StackFrame> = []
 ): {
-    value: string | number | boolean;
+    value: string | number | boolean | Array<any>;
     type: Token;
 } {
     state.push({ vars: {}, funcs: {} });
     const vars: {
-        [key: string]: { value: string | boolean | number; type: Token };
+        [key: string]: {
+            value: string | boolean | number | Array<any>;
+            type: Token;
+        };
     } = {};
     const funcs: {
         [key: string]: {
@@ -286,14 +304,20 @@ export function evaluate(
         );
     const first = res[0];
 
-    let returnVal: { type: Token; value: string | boolean | number } =
-        res.at(-1)!;
+    let returnVal: {
+        type: Token;
+        value: string | boolean | number | Array<any>;
+    } = res.at(-1)!;
 
     if (first.type === Token.Id) {
         if (first.value === "print") {
             const str = res
                 .slice(1)
-                .map(x => x.value)
+                .map(x =>
+                    Array.isArray(x.value)
+                        ? x.value.map(i => i.value).join(" ")
+                        : x.value
+                )
                 .join(" ");
             console.log(str);
             returnVal = {
@@ -384,6 +408,19 @@ export function evaluate(
                 type: Token.Bool,
                 value: !(res[1].value as any),
             };
+        }
+
+        if (first.value === "list") {
+            returnVal = {
+                type: Token.List,
+                value: res.slice(1),
+            };
+        }
+
+        if (first.value === "nth") {
+            if (!Array.isArray(res[2].value))
+                throw new Error("not accessing an array");
+            returnVal = res[2].value.at(res[1].value as number);
         }
 
         if (

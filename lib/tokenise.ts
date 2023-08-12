@@ -6,6 +6,7 @@ export enum Token {
     Id = "id",
     WhiteSpace = "whitespace",
     Bool = "bool",
+    List = "list",
 }
 
 export type TokenList = {

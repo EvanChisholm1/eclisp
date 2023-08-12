@@ -54,6 +54,7 @@ var Token;
   Token2["Id"] = "id";
   Token2["WhiteSpace"] = "whitespace";
   Token2["Bool"] = "bool";
+  Token2["List"] = "list";
 })(Token || (Token = {}));
 var numbers = new Array(10).fill(0).map((_, i) => i.toString());
 
@@ -204,7 +205,7 @@ function evaluate(ast, state = []) {
   let returnVal = res.at(-1);
   if (first.type === Token.Id) {
     if (first.value === "print") {
-      const str = res.slice(1).map((x) => x.value).join(" ");
+      const str = res.slice(1).map((x) => Array.isArray(x.value) ? x.value.map((i) => i.value).join(" ") : x.value).join(" ");
       console.log(str);
       returnVal = {
         type: Token.String,
@@ -282,6 +283,17 @@ function evaluate(ast, state = []) {
         type: Token.Bool,
         value: !res[1].value
       };
+    }
+    if (first.value === "list") {
+      returnVal = {
+        type: Token.List,
+        value: res.slice(1)
+      };
+    }
+    if (first.value === "nth") {
+      if (!Array.isArray(res[2].value))
+        throw new Error("not accessing an array");
+      returnVal = res[2].value.at(res[1].value);
     }
     if (Object.entries(funcs).map(([key]) => key).includes(first.value)) {
       returnVal = runFunc(first.value, res.slice(1), state);
