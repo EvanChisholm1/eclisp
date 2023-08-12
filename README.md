@@ -47,7 +47,8 @@ Fibonnaci sequence O(N) time complexity:
 -   [x] Better command line experience
 -   [x] Fibonacci Sequence From Scratch
 -   [ ] Quote
--   [ ] Array
+-   [x] Array
+-   [ ] Array Methods, setn, length, map, filter reduce, etc
 -   [ ] Hashmap
 -   [ ] Web Playground
 -   [ ] More Builtin Operators/Functions; ^, sqrt, floor, ceil, round, input, etc.
