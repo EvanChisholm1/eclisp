@@ -14,3 +14,5 @@
 ))
 
 (print sum)
+(setnth 0 myNums 99)
+(print myNums)

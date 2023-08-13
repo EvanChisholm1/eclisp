@@ -48,11 +48,14 @@ Fibonnaci sequence O(N) time complexity:
 -   [x] Fibonacci Sequence From Scratch
 -   [ ] Quote
 -   [x] Array
--   [ ] Array Methods, setn, length, map, filter reduce, etc
+-   [x] setn
+-   [ ] Array Methods;length, map, filter reduce, etc
 -   [ ] Hashmap
--   [ ] Web Playground
+-   [x] Web Playground
+-   [ ] Make web playground pretty and nice to look at
 -   [ ] More Builtin Operators/Functions; ^, sqrt, floor, ceil, round, input, etc.
 -   [ ] Gigantic Refactor because the code is terrible
 -   [ ] Better Type Safety/TypeScript Typings, kinda part of refactor
 -   [ ] Error Handling, Currently errors just silently happen
 -   [ ] Proper Value Type so every time I make a change I don't have to update it throughout my code base
+-   [ ] Documentation

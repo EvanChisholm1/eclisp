@@ -423,6 +423,13 @@ export function evaluate(
             returnVal = res[2].value.at(res[1].value as number);
         }
 
+        if (first.value === "setnth") {
+            if (!Array.isArray(res[2].value))
+                throw new Error("not accessing an array");
+            res[2].value[res[1].value as number] = res[3];
+            return res[3];
+        }
+
         if (
             Object.entries(funcs)
                 .map(([key]) => key)
