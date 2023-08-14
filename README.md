@@ -31,6 +31,22 @@ Fibonnaci sequence O(N) time complexity:
 ))
 ```
 
+## Use
+
+To use this language it is reccomended that you use [Bun](https://bun.sh). It is a super fast and cool JavaScript and TypeScript runtime. You don't neccescarily have to use it as the core language is just TypeScript/JavaScript and web apis but the `index.ts` file has some native bun apis in it. If you don't want to install install bun or figure out how to build and run with your favorite JavaScript runtime such as Deno or Node just use the [web playground](https://eclisp.vercel.app).
+
+Run .eclisp file:
+
+```
+bun run index.ts [PATH TO INPUT FILE]
+```
+
+Build for browser:
+
+```
+bun build browser.ts --outdir public
+```
+
 ## Todo:
 
 -   [x] Tokenizer
