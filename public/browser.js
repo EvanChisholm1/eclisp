@@ -295,6 +295,18 @@ function evaluate(ast, state = []) {
         throw new Error("not accessing an array");
       returnVal = res[2].value.at(res[1].value);
     }
+    if (first.value === "setnth") {
+      if (!Array.isArray(res[2].value))
+        throw new Error("not accessing an array");
+      res[2].value[res[1].value] = res[3];
+      return res[3];
+    }
+    if (first.value === "join") {
+      returnVal = {
+        type: Token.List,
+        value: res.slice(1).flatMap((x) => x.value)
+      };
+    }
     if (Object.entries(funcs).map(([key]) => key).includes(first.value)) {
       returnVal = runFunc(first.value, res.slice(1), state);
     }

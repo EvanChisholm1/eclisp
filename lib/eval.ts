@@ -430,6 +430,13 @@ export function evaluate(
             return res[3];
         }
 
+        if (first.value === "join") {
+            returnVal = {
+                type: Token.List,
+                value: res.slice(1).flatMap(x => x.value),
+            };
+        }
+
         if (
             Object.entries(funcs)
                 .map(([key]) => key)
