@@ -1,0 +1,26 @@
+(defn zeros (n) (
+    (let arr (list 0))
+    (for (let i 1) (< i n) (set i (+ i 1)) (
+        (set arr (join arr (list 0)))
+    ))
+    (arr)
+))
+
+(defn sieve (n) (
+    (let nums (zeros (+ n 1)))
+    (let number-of-primes 0)
+    (for (let i 2) (<= i n) (set i (+ i 1)) (
+        (if (= (nth i nums) 0) (
+            (print i "is prime")
+            (set number-of-primes (+ number-of-primes 1))
+            (for (let j 2) (<= (* j i) n) (set j (+ j 1)) (
+                (setnth (* j i) nums 1)
+            ))
+        )) 
+    ))
+    (print "in total there are" number-of-primes "under and including" n)
+
+    (nums)
+))
+
+(print (sieve 100))
