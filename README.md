@@ -2,7 +2,7 @@
 
 A simple little lisp built with TypeScript.
 
-[Web Playground](https://eclisp.vercel.app), Very Ugly but super simple to use.
+[Web Playground](https://eclisp.vercel.app) Not Responsive and Darkmode coming soon.
 
 Fibonnaci sequence O(N) time complexity:
 

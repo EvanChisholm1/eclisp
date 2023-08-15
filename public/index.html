@@ -4,6 +4,7 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Eclisp</title>
+        <script src="https://cdn.tailwindcss.com"></script>
         <style>
             textarea {
                 width: 500px;
@@ -12,12 +13,23 @@
         </style>
     </head>
     <body>
-        <h1>Eclisp Browser Sandbox</h1>
-        <p>Open Your Browsers Console To See Program Output</p>
-        <form>
-            <textarea width="500px" height="500px"> </textarea>
-            <button type="submit">run</button>
-        </form>
+        <div class="grid gap-3 w-100% place-content-center">
+            <h1 class="text-4xl">Eclisp Browser Sandbox</h1>
+            <p>Open Your Browsers Console To See Program Output</p>
+            <form class="grid gap-4">
+                <textarea
+                    class="w-[900px] h-[800px] font-mono ring-none outline-none border-none rounded ring-2 ring-gray-200 focus:ring-2 focus:ring-blue-500"
+                >
+                </textarea>
+                <button
+                    class="bg-blue-500 text-white rounded-md p-2 font-semibold"
+                    type="submit"
+                >
+                    Run
+                </button>
+            </form>
+            <small>darkmode coming soon...</small>
+        </div>
         <script src="./browser.js"></script>
     </body>
 </html>
