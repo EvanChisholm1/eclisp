@@ -18,9 +18,9 @@
             ))
         )) 
     ))
-    (print "in total there are" number-of-primes "under and including" n)
+    (print "in total there are" number-of-primes "primes under" n)
 
     (nums)
 ))
 
-(print (sieve 100))
+(print (sieve 1000))

@@ -437,6 +437,13 @@ export function evaluate(
             };
         }
 
+        if (first.value === "length") {
+            returnVal = {
+                type: Token.Number,
+                value: (res.at(1)?.value as any).length,
+            };
+        }
+
         if (
             Object.entries(funcs)
                 .map(([key]) => key)

@@ -307,6 +307,12 @@ function evaluate(ast, state = []) {
         value: res.slice(1).flatMap((x) => x.value)
       };
     }
+    if (first.value === "length") {
+      returnVal = {
+        type: Token.Number,
+        value: res.at(1)?.value.length
+      };
+    }
     if (Object.entries(funcs).map(([key]) => key).includes(first.value)) {
       returnVal = runFunc(first.value, res.slice(1), state);
     }
