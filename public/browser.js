@@ -313,6 +313,13 @@ function evaluate(ast, state = []) {
         value: res.at(1)?.value.length
       };
     }
+    if (first.value === "push") {
+      res[2].value.push(res[1]);
+      returnVal = {
+        type: Token.List,
+        value: res.at(2).value
+      };
+    }
     if (Object.entries(funcs).map(([key]) => key).includes(first.value)) {
       returnVal = runFunc(first.value, res.slice(1), state);
     }

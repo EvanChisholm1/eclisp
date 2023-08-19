@@ -444,6 +444,14 @@ export function evaluate(
             };
         }
 
+        if (first.value === "push") {
+            (res[2].value as any).push(res[1]);
+            returnVal = {
+                type: Token.List,
+                value: res.at(2)!.value,
+            };
+        }
+
         if (
             Object.entries(funcs)
                 .map(([key]) => key)
