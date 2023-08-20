@@ -12,13 +12,13 @@
             }
         </style>
     </head>
-    <body>
+    <body class="dark:bg-slate-900 dark:text-white">
         <div class="grid gap-3 w-100% place-content-center">
             <h1 class="text-4xl">Eclisp Browser Sandbox</h1>
             <p>Open Your Browsers Console To See Program Output</p>
             <form class="grid gap-4">
                 <textarea
-                    class="w-[900px] h-[800px] font-mono ring-none outline-none border-none rounded ring-2 ring-gray-200 focus:ring-2 focus:ring-blue-500"
+                    class="w-[900px] h-[800px] font-mono ring-none outline-none border-none rounded ring-2 ring-gray-200 focus:ring-2 focus:ring-blue-500 dark:bg-slate-900 dark:ring-slate-800 p-5"
                 >
                 </textarea>
                 <button
@@ -28,7 +28,6 @@
                     Run
                 </button>
             </form>
-            <small>darkmode coming soon...</small>
         </div>
         <script src="./browser.js"></script>
     </body>

@@ -2,7 +2,7 @@
 
 A simple little lisp built with TypeScript.
 
-[Web Playground](https://eclisp.vercel.app) Not Responsive and Darkmode coming soon.
+[Web Playground](https://eclisp.vercel.app) Only Really works on desktop.
 
 Fibonnaci sequence O(N) time complexity:
 
@@ -68,7 +68,7 @@ bun build browser.ts --outdir public
 -   [ ] Array Methods;length, map, filter reduce, etc
 -   [ ] Hashmap
 -   [x] Web Playground
--   [ ] Make web playground pretty and nice to look at
+-   [x] Make web playground pretty and nice to look at
 -   [ ] More Builtin Operators/Functions; ^, sqrt, floor, ceil, round, input, etc.
 -   [ ] Gigantic Refactor because the code is terrible
 -   [ ] Better Type Safety/TypeScript Typings, kinda part of refactor
