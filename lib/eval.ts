@@ -354,6 +354,41 @@ export function evaluate(
             };
         }
 
+        if (first.value === "^") {
+            returnVal = {
+                type: Token.Number,
+                value: Math.pow(res[1].value as number, res[2].value as number),
+            };
+        }
+
+        if (first.value === "sqrt") {
+            returnVal = {
+                type: Token.Number,
+                value: Math.sqrt(res[1].value as number),
+            };
+        }
+
+        if (first.value === "round") {
+            returnVal = {
+                type: Token.Number,
+                value: Math.round(res[1].value as number),
+            };
+        }
+
+        if (first.value === "ceil") {
+            returnVal = {
+                type: Token.Number,
+                value: Math.ceil(res[1].value as number),
+            };
+        }
+
+        if (first.value === "floor") {
+            returnVal = {
+                type: Token.Number,
+                value: Math.floor(res[1].value as number),
+            };
+        }
+
         if (first.value === ">") {
             returnVal = {
                 type: Token.Bool,

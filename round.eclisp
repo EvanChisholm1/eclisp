@@ -1,0 +1,17 @@
+(print "round")
+
+(print (round 4.5))
+(print (round 4.3))
+(print (round 4.6))
+
+(print)
+(print "ceil")
+(print (ceil 4.5))
+(print (ceil 4.3))
+(print (ceil 4.6))
+
+(print)
+(print "floor")
+(print (floor 4.5))
+(print (floor 4.3))
+(print (floor 4.6))
