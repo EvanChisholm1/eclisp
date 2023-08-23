@@ -1,7 +1,7 @@
 import { AST } from "./parser";
 import { Token } from "./tokenise";
 
-interface StackFrame {
+export interface StackFrame {
     vars: {
         [key: string]: {
             value: string | boolean | number | Array<any>;
@@ -185,7 +185,7 @@ function evalLet(
     id: string,
     newValue: AST | { type: Token; value: string | boolean | number },
     state: Array<StackFrame>
-): { type: Token; value: string | boolean | number } {
+): { type: Token; value: string | boolean | number | any[] } {
     const vars: {
         [key: string]: {
             value: string | boolean | number | Array<any>;
@@ -213,17 +213,19 @@ function evalLet(
     state.at(-2)!.vars[id] = setValue;
 
     state.pop();
-    return { type: Token.Bool, value: false };
+    return setValue;
 }
 
 export function evaluate(
     ast: AST,
-    state: Array<StackFrame> = []
+    state: Array<StackFrame> = [],
+    shouldPop: boolean = true,
+    shouldPush: boolean = true
 ): {
     value: string | number | boolean | Array<any>;
     type: Token;
 } {
-    state.push({ vars: {}, funcs: {} });
+    if (shouldPush) state.push({ vars: {}, funcs: {} });
     const vars: {
         [key: string]: {
             value: string | boolean | number | Array<any>;
@@ -496,6 +498,6 @@ export function evaluate(
         }
     }
 
-    state.pop();
+    if (shouldPop) state.pop();
     return returnVal;
 }

@@ -65,8 +65,9 @@ bun build browser.ts --outdir public
 -   [ ] Quote
 -   [x] Array
 -   [x] setn
--   [ ] Array Methods;length, map, filter reduce, etc
+-   [ ] Array Methods; length, map, filter reduce, etc
 -   [ ] Hashmap
+-   [ ] make strings useful; actual string methods and such
 -   [x] Web Playground
 -   [x] Make web playground pretty and nice to look at
 -   [ ] More Builtin Operators/Functions; ^, sqrt, floor, ceil, round, input, etc.
@@ -75,3 +76,4 @@ bun build browser.ts --outdir public
 -   [ ] Error Handling, Currently errors just silently happen
 -   [ ] Proper Value Type so every time I make a change I don't have to update it throughout my code base
 -   [ ] Documentation
+-   [x] repl

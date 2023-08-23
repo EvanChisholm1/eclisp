@@ -1,16 +1,16 @@
 import { tokenize } from "./lib/tokenise";
 import { parse } from "./lib/parser";
 import { evaluate } from "./lib/eval";
+import { repl } from "./lib/repl";
 
-const file = Bun.file(Bun.argv[2]);
+if (Bun.argv[2]) {
+    const file = Bun.file(Bun.argv[2]);
 
-const text = await file.text();
-// console.log(text);
+    const text = await file.text();
+    const tokens = tokenize(text);
+    const ast = parse(tokens);
 
-const tokens = tokenize(text);
-// console.log(tokens);
-
-const ast = parse(tokens);
-// console.log(ast);
-
-evaluate(ast);
+    evaluate(ast);
+} else {
+    repl();
+}
