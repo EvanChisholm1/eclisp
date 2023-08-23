@@ -45,6 +45,8 @@ export function tokenize(input: string): TokenList {
                 strC = inputStream.splice(0, 1)[0];
                 string.push(strC);
             } while (strC !== '"');
+            string.shift();
+            string.pop();
             tokens.push({ type: Token.String, value: string.join("") });
         } else {
             const id: string[] = [currentChar];
