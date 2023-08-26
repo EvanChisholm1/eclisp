@@ -17,7 +17,7 @@ function read() {
     let textData = "";
 
     do {
-        const newText = prompt(">");
+        const newText = prompt(textData.length > 0 ? "..." : ">");
         textData = `${textData}\n${newText}`;
     } while (!doneExpression(textData));
 
@@ -31,6 +31,7 @@ const state: StackFrame[] = [
 ];
 
 export function repl() {
+    console.log("Welcome to the eclisp repl start typing to begin.\n");
     while (true) {
         console.log(
             evaluate(parse(tokenize(read())), state, false, false).value
