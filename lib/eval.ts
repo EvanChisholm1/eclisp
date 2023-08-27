@@ -489,6 +489,13 @@ export function evaluate(
             };
         }
 
+        if (first.value === "rand") {
+            returnVal = {
+                type: Token.Number,
+                value: Math.random(),
+            };
+        }
+
         if (
             Object.entries(funcs)
                 .map(([key]) => key)
