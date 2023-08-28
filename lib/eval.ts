@@ -496,6 +496,15 @@ export function evaluate(
             };
         }
 
+        if (first.value === "map") {
+            returnVal = {
+                type: Token.List,
+                value: (res[2].value as Array<any>).map((v, i) =>
+                    runFunc(res[1].value as string, [v, i], state)
+                ),
+            };
+        }
+
         if (
             Object.entries(funcs)
                 .map(([key]) => key)

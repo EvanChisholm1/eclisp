@@ -70,7 +70,7 @@ bun build browser.ts --outdir public
 -   [ ] make strings useful; actual string methods and such
 -   [x] Web Playground
 -   [x] Make web playground pretty and nice to look at
--   [ ] More Builtin Operators/Functions; ^, sqrt, floor, ceil, round, input, etc.
+-   [x] More Builtin Operators/Functions; ^, sqrt, floor, ceil, round, input, etc.
 -   [ ] Gigantic Refactor because the code is terrible
 -   [ ] Better Type Safety/TypeScript Typings, kinda part of refactor
 -   [ ] Error Handling, Currently errors just silently happen

@@ -1,0 +1,6 @@
+(let l (list 1 2 3))
+(print l)
+
+(defn inc (x) (+ 1 x))
+
+(print (map inc l))
