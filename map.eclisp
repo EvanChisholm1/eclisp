@@ -4,3 +4,16 @@
 (defn inc (x) (+ 1 x))
 
 (print (map inc l))
+
+(defn more-than-two (x) (
+    (if (> x 2) (
+        true
+    ) (
+        false
+    ))
+))
+
+(print (more-than-two 4))
+(print (more-than-two 1))
+
+(print (filter more-than-two l))

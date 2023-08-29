@@ -28,6 +28,8 @@ function tokenize(input) {
         strC = inputStream.splice(0, 1)[0];
         string.push(strC);
       } while (strC !== '"');
+      string.shift();
+      string.pop();
       tokens.push({ type: Token.String, value: string.join("") });
     } else {
       const id = [currentChar];
@@ -168,10 +170,11 @@ var evalLet = function(id, newValue, state) {
   }
   state.at(-2).vars[id] = setValue;
   state.pop();
-  return { type: Token.Bool, value: false };
+  return setValue;
 };
-function evaluate(ast, state = []) {
-  state.push({ vars: {}, funcs: {} });
+function evaluate(ast, state = [], shouldPop = true, shouldPush = true) {
+  if (shouldPush)
+    state.push({ vars: {}, funcs: {} });
   const vars = {};
   const funcs = {};
   if (!Array.isArray(ast[0]) && ast[0].type === Token.Id && ast[0].value === "if") {
@@ -350,11 +353,30 @@ function evaluate(ast, state = []) {
         value: res.at(2).value
       };
     }
+    if (first.value === "rand") {
+      returnVal = {
+        type: Token.Number,
+        value: Math.random()
+      };
+    }
+    if (first.value === "map") {
+      returnVal = {
+        type: Token.List,
+        value: res[2].value.map((v, i) => runFunc(res[1].value, [v, i], state))
+      };
+    }
+    if (first.value === "filter") {
+      returnVal = {
+        type: Token.List,
+        value: res[2].value.filter((v, i) => runFunc(res[1].value, [v, i], state).value)
+      };
+    }
     if (Object.entries(funcs).map(([key]) => key).includes(first.value)) {
       returnVal = runFunc(first.value, res.slice(1), state);
     }
   }
-  state.pop();
+  if (shouldPop)
+    state.pop();
   return returnVal;
 }
 

@@ -505,6 +505,16 @@ export function evaluate(
             };
         }
 
+        if (first.value === "filter") {
+            returnVal = {
+                type: Token.List,
+                value: (res[2].value as Array<any>).filter(
+                    (v, i) =>
+                        runFunc(res[1].value as string, [v, i], state).value
+                ),
+            };
+        }
+
         if (
             Object.entries(funcs)
                 .map(([key]) => key)
