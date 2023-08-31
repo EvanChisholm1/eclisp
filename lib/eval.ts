@@ -1,20 +1,7 @@
 import { AST } from "./parser";
 import { Token } from "./tokenise";
-
-export interface StackFrame {
-    vars: {
-        [key: string]: {
-            value: string | boolean | number | Array<any>;
-            type: Token;
-        };
-    };
-    funcs: {
-        [key: string]: {
-            ast: AST;
-            paramIds: Array<string>;
-        };
-    };
-}
+import StackFrame from "./stackframe";
+import getCurrentState from "./getCurrentState";
 
 function funcDef(ast: AST, state: Array<StackFrame>) {
     // ast value 0: defn
@@ -49,29 +36,7 @@ function runFunc(
     }>,
     state: Array<StackFrame>
 ) {
-    const vars: {
-        [key: string]: {
-            value: string | boolean | number | Array<any>;
-            type: Token;
-        };
-    } = {};
-    const funcs: {
-        [key: string]: {
-            ast: AST;
-            paramIds: Array<string>;
-        };
-    } = {};
-
-    for (const frame of state) {
-        for (const [key, value] of Object.entries(frame.vars)) {
-            vars[key] = value;
-        }
-
-        for (const [key, value] of Object.entries(frame.funcs)) {
-            funcs[key] = value;
-        }
-    }
-
+    const { funcs } = getCurrentState(state);
     const defintion = funcs[id]!;
     defintion.paramIds.forEach((x, i) => {
         state[state.length - 1].vars[x] = params[i];
@@ -147,18 +112,7 @@ function evalSet(
     newValue: AST | { type: Token; value: string | boolean | number },
     state: Array<StackFrame>
 ): { type: Token; value: string | boolean | number } {
-    const vars: {
-        [key: string]: {
-            value: string | boolean | number | Array<any>;
-            type: Token;
-        };
-    } = {};
-
-    for (const frame of state) {
-        for (const [key, value] of Object.entries(frame.vars)) {
-            vars[key] = value;
-        }
-    }
+    const { vars } = getCurrentState(state);
 
     let setValue = Array.isArray(newValue)
         ? evaluate(newValue, state)
@@ -186,18 +140,7 @@ function evalLet(
     newValue: AST | { type: Token; value: string | boolean | number },
     state: Array<StackFrame>
 ): { type: Token; value: string | boolean | number | any[] } {
-    const vars: {
-        [key: string]: {
-            value: string | boolean | number | Array<any>;
-            type: Token;
-        };
-    } = {};
-
-    for (const frame of state) {
-        for (const [key, value] of Object.entries(frame.vars)) {
-            vars[key] = value;
-        }
-    }
+    const { vars } = getCurrentState(state);
 
     let setValue = Array.isArray(newValue)
         ? evaluate(newValue, state)
@@ -226,18 +169,6 @@ export function evaluate(
     type: Token;
 } {
     if (shouldPush) state.push({ vars: {}, funcs: {} });
-    const vars: {
-        [key: string]: {
-            value: string | boolean | number | Array<any>;
-            type: Token;
-        };
-    } = {};
-    const funcs: {
-        [key: string]: {
-            ast: AST;
-            paramIds: Array<string>;
-        };
-    } = {};
 
     if (
         !Array.isArray(ast[0]) &&
@@ -289,15 +220,7 @@ export function evaluate(
         return evalLet(ast[1].value as string, ast[2], state);
     }
 
-    for (const frame of state) {
-        for (const [key, value] of Object.entries(frame.vars)) {
-            vars[key] = value;
-        }
-
-        for (const [key, value] of Object.entries(frame.funcs)) {
-            funcs[key] = value;
-        }
-    }
+    const { vars, funcs } = getCurrentState(state);
 
     const res = ast
         .map(x => (Array.isArray(x) ? evaluate(x, state) : x))

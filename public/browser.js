@@ -60,6 +60,23 @@ var Token;
 })(Token || (Token = {}));
 var numbers = new Array(10).fill(0).map((_, i) => i.toString());
 
+// lib/getCurrentState.ts
+function getCurrentState(stack) {
+  const currentState = {
+    vars: {},
+    funcs: {}
+  };
+  for (const frame of stack) {
+    for (const [key, value] of Object.entries(frame.vars)) {
+      currentState.vars[key] = value;
+    }
+    for (const [key, value] of Object.entries(frame.funcs)) {
+      currentState.funcs[key] = value;
+    }
+  }
+  return currentState;
+}
+
 // lib/eval.ts
 var funcDef = function(ast, state) {
   if (!Array.isArray(ast))
@@ -80,16 +97,7 @@ var funcDef = function(ast, state) {
   return { value: true, type: Token.Bool };
 };
 var runFunc = function(id, params, state) {
-  const vars = {};
-  const funcs = {};
-  for (const frame of state) {
-    for (const [key, value] of Object.entries(frame.vars)) {
-      vars[key] = value;
-    }
-    for (const [key, value] of Object.entries(frame.funcs)) {
-      funcs[key] = value;
-    }
-  }
+  const { funcs } = getCurrentState(state);
   const defintion = funcs[id];
   defintion.paramIds.forEach((x, i) => {
     state[state.length - 1].vars[x] = params[i];
@@ -139,12 +147,7 @@ var evalFor = function(ast, state) {
   return returnVal;
 };
 var evalSet = function(id, newValue, state) {
-  const vars = {};
-  for (const frame of state) {
-    for (const [key, value] of Object.entries(frame.vars)) {
-      vars[key] = value;
-    }
-  }
+  const { vars } = getCurrentState(state);
   let setValue = Array.isArray(newValue) ? evaluate(newValue, state) : newValue;
   if (setValue.type === Token.Id && vars[setValue.value] !== undefined) {
     setValue = vars[setValue.value];
@@ -158,12 +161,7 @@ var evalSet = function(id, newValue, state) {
   return { type: Token.Bool, value: false };
 };
 var evalLet = function(id, newValue, state) {
-  const vars = {};
-  for (const frame of state) {
-    for (const [key, value] of Object.entries(frame.vars)) {
-      vars[key] = value;
-    }
-  }
+  const { vars } = getCurrentState(state);
   let setValue = Array.isArray(newValue) ? evaluate(newValue, state) : newValue;
   if (setValue.type === Token.Id && vars[setValue.value] !== undefined) {
     setValue = vars[setValue.value];
@@ -175,8 +173,6 @@ var evalLet = function(id, newValue, state) {
 function evaluate(ast, state = [], shouldPop = true, shouldPush = true) {
   if (shouldPush)
     state.push({ vars: {}, funcs: {} });
-  const vars = {};
-  const funcs = {};
   if (!Array.isArray(ast[0]) && ast[0].type === Token.Id && ast[0].value === "if") {
     return evalIf(ast, state);
   }
@@ -195,14 +191,7 @@ function evaluate(ast, state = [], shouldPop = true, shouldPush = true) {
   if (!Array.isArray(ast[0]) && ast[0].type === Token.Id && !Array.isArray(ast[1]) && ast[0].value === "let") {
     return evalLet(ast[1].value, ast[2], state);
   }
-  for (const frame of state) {
-    for (const [key, value] of Object.entries(frame.vars)) {
-      vars[key] = value;
-    }
-    for (const [key, value] of Object.entries(frame.funcs)) {
-      funcs[key] = value;
-    }
-  }
+  const { vars, funcs } = getCurrentState(state);
   const res = ast.map((x) => Array.isArray(x) ? evaluate(x, state) : x).map((x) => vars[x.value] !== undefined ? vars[x.value] : x);
   const first = res[0];
   let returnVal = res.at(-1);
