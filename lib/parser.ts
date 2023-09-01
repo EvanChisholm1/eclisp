@@ -1,7 +1,7 @@
 import { Token, TokenList } from "./tokenise";
 
 export type AST = Array<
-    AST | { value: string | number | boolean; type: Token }
+    AST | { value: string | number | boolean | Array<any>; type: Token }
 >;
 
 export function parse(toks: TokenList): AST {

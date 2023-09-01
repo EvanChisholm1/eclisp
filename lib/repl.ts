@@ -1,6 +1,7 @@
-import { evaluate, StackFrame } from "./eval";
+import { evaluate } from "./eval";
+import StackFrame from "./stackframe";
 import { parse } from "./parser";
-import { tokenize } from "./tokenise";
+import { Token, tokenize } from "./tokenise";
 
 function doneExpression(text: string) {
     const parens: string[] = [];
@@ -33,8 +34,9 @@ const state: StackFrame[] = [
 export function repl() {
     console.log("Welcome to the eclisp repl start typing to begin.\n");
     while (true) {
-        console.log(
-            evaluate(parse(tokenize(read())), state, false, false).value
-        );
+        evaluate([
+            { type: Token.Id, value: "print" },
+            evaluate(parse(tokenize(read())), state, false, false),
+        ]);
     }
 }

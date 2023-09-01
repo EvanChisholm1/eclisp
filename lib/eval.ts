@@ -109,7 +109,9 @@ function evalFor(ast: AST, state: Array<StackFrame>) {
 
 function evalSet(
     id: string,
-    newValue: AST | { type: Token; value: string | boolean | number },
+    newValue:
+        | AST
+        | { type: Token; value: string | boolean | number | Array<any> },
     state: Array<StackFrame>
 ): { type: Token; value: string | boolean | number } {
     const { vars } = getCurrentState(state);
@@ -137,7 +139,9 @@ function evalSet(
 
 function evalLet(
     id: string,
-    newValue: AST | { type: Token; value: string | boolean | number },
+    newValue:
+        | AST
+        | { type: Token; value: string | boolean | number | Array<any> },
     state: Array<StackFrame>
 ): { type: Token; value: string | boolean | number | any[] } {
     const { vars } = getCurrentState(state);
