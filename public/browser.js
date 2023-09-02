@@ -94,7 +94,7 @@ var funcDef = function(ast, state) {
   };
   state.at(-2).funcs[funcName] = func;
   state.pop();
-  return { value: true, type: Token.Bool };
+  return { value: funcName, type: Token.Id };
 };
 var runFunc = function(id, params, state) {
   const { funcs } = getCurrentState(state);
@@ -158,7 +158,7 @@ var evalSet = function(id, newValue, state) {
     }
   }
   state.pop();
-  return { type: Token.Bool, value: false };
+  return setValue;
 };
 var evalLet = function(id, newValue, state) {
   const { vars } = getCurrentState(state);

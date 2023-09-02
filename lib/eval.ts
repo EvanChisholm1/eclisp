@@ -2,8 +2,9 @@ import { AST } from "./parser";
 import { Token } from "./tokenise";
 import StackFrame from "./stackframe";
 import getCurrentState from "./getCurrentState";
+import { Value } from "./value";
 
-function funcDef(ast: AST, state: Array<StackFrame>) {
+function funcDef(ast: AST, state: Array<StackFrame>): Value {
     // ast value 0: defn
     // ast value 1: id
     // ast value 2: params list (a b c)
@@ -25,17 +26,10 @@ function funcDef(ast: AST, state: Array<StackFrame>) {
     state.at(-2)!.funcs[funcName] = func;
     state.pop();
 
-    return { value: true, type: Token.Bool };
+    return { value: funcName, type: Token.Id };
 }
 
-function runFunc(
-    id: string,
-    params: Array<{
-        value: string | boolean | number | Array<any>;
-        type: Token;
-    }>,
-    state: Array<StackFrame>
-) {
+function runFunc(id: string, params: Array<Value>, state: Array<StackFrame>) {
     const { funcs } = getCurrentState(state);
     const defintion = funcs[id]!;
     defintion.paramIds.forEach((x, i) => {
@@ -67,10 +61,7 @@ function evalWhile(ast: AST, state: Array<StackFrame>) {
     let condition;
     condition = Array.isArray(ast[1]) ? evaluate(ast[1], state) : ast[1];
 
-    let returnVal: {
-        type: Token;
-        value: string | number | boolean | Array<any>;
-    } = { type: Token.Bool, value: false };
+    let returnVal: Value = { type: Token.Bool, value: false };
     while (condition.value) {
         if (condition.value) {
             returnVal = Array.isArray(ast[2])
@@ -89,10 +80,7 @@ function evalFor(ast: AST, state: Array<StackFrame>) {
     let condition;
     condition = Array.isArray(ast[2]) ? evaluate(ast[2], state) : ast[2];
 
-    let returnVal: {
-        type: Token;
-        value: string | number | boolean | Array<any>;
-    } = { type: Token.Bool, value: false };
+    let returnVal: Value = { type: Token.Bool, value: false };
     while (condition.value) {
         if (condition.value) {
             returnVal = Array.isArray(ast[4])
@@ -109,11 +97,9 @@ function evalFor(ast: AST, state: Array<StackFrame>) {
 
 function evalSet(
     id: string,
-    newValue:
-        | AST
-        | { type: Token; value: string | boolean | number | Array<any> },
+    newValue: AST | Value,
     state: Array<StackFrame>
-): { type: Token; value: string | boolean | number } {
+): Value {
     const { vars } = getCurrentState(state);
 
     let setValue = Array.isArray(newValue)
@@ -134,16 +120,14 @@ function evalSet(
     }
 
     state.pop();
-    return { type: Token.Bool, value: false };
+    return setValue;
 }
 
 function evalLet(
     id: string,
-    newValue:
-        | AST
-        | { type: Token; value: string | boolean | number | Array<any> },
+    newValue: AST | Value,
     state: Array<StackFrame>
-): { type: Token; value: string | boolean | number | any[] } {
+): Value {
     const { vars } = getCurrentState(state);
 
     let setValue = Array.isArray(newValue)
@@ -168,10 +152,7 @@ export function evaluate(
     state: Array<StackFrame> = [],
     shouldPop: boolean = true,
     shouldPush: boolean = true
-): {
-    value: string | number | boolean | Array<any>;
-    type: Token;
-} {
+): Value {
     if (shouldPush) state.push({ vars: {}, funcs: {} });
 
     if (
@@ -233,10 +214,7 @@ export function evaluate(
         );
     const first = res[0];
 
-    let returnVal: {
-        type: Token;
-        value: string | boolean | number | Array<any>;
-    } = res.at(-1)!;
+    let returnVal: Value = res.at(-1)!;
 
     if (first.type === Token.Id) {
         if (first.value === "print") {

@@ -1,12 +1,9 @@
-import { Token } from "./tokenise";
 import { AST } from "./parser";
+import { Value } from "./value";
 
 export default interface StackFrame {
     vars: {
-        [key: string]: {
-            value: string | boolean | number | Array<any>;
-            type: Token;
-        };
+        [key: string]: Value;
     };
     funcs: {
         [key: string]: {
